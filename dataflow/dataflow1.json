@@ -1,0 +1,81 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SalesData",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ErrorData",
+						"type": "DatasetReference"
+					},
+					"name": "errordata"
+				},
+				{
+					"dataset": {
+						"referenceName": "GoodData",
+						"type": "DatasetReference"
+					},
+					"name": "GoodData"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          saleDate as string,",
+				"          salesitem as string,",
+				"          country as string,",
+				"          quantity as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"derivedColumn1 split(isNull(toDate(saleDate,'dd-MMM-YY')),",
+				"     disjoint: false) ~> split1@(Errorrows, GoodRows)",
+				"source1 derive(filename = 'salesData.csv') ~> derivedColumn1",
+				"split1@Errorrows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          saleDate as string,",
+				"          salesitem as string,",
+				"          country as string,",
+				"          quantity as string",
+				"     ),",
+				"     partitionFileNames:['errordata.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     partitionBy('hash', 1)) ~> errordata",
+				"split1@GoodRows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          saleDate as string,",
+				"          salesitem as string,",
+				"          country as string,",
+				"          quantity as string",
+				"     ),",
+				"     partitionFileNames:['gooddata.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     partitionBy('hash', 1)) ~> GoodData"
+			]
+		}
+	}
+}

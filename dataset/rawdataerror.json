@@ -1,0 +1,16 @@
+{
+	"name": "rawdataerror",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MySql1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "MySqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "`rawdataerror`"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,9 @@
+{
+	"name": "AzureDataFacty",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "000818fa-b930-4628-b744-f5128fd7c664",
+		"tenantId": "b7704afc-ca58-4170-bcef-ee4044dcd3d1"
+	}
+}
