@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText2",
+	"name": "fixlength",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
